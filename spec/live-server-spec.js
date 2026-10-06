@@ -1,6 +1,6 @@
 const fs = require("node:fs"),
   path = require("node:path");
-const { findOnPath } = require("../lib/server");
+const { findOnPath } = require("./helpers/server-resolution");
 const { LiveLspClient } = require("./helpers/live-lsp-client");
 const { createProject, prepareProject, removeProject } = require("./helpers/project");
 const {
@@ -8,7 +8,7 @@ const {
   exerciseUnicodeRename,
   exerciseDiagnosticEdits,
 } = require("./helpers/exercise-server");
-const runtime = process.env.DART_PATH || findOnPath();
+const runtime = process.env.DART_PATH || findOnPath("dart");
 if (process.env.REQUIRE_DART_LSP && !runtime)
   throw new Error("CI requires the real Dart SDK analysis server.");
 const liveSuite = runtime ? describe : xdescribe;

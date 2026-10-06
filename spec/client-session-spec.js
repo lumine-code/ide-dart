@@ -1,6 +1,6 @@
-const { findOnPath } = require("../lib/server"),
+const { findOnPath } = require("./helpers/server-resolution"),
   { createProject, prepareProject, removeProject, position } = require("./helpers/project");
-const runtime = process.env.DART_PATH || findOnPath(),
+const runtime = process.env.DART_PATH || findOnPath("dart"),
   liveSuite = runtime ? describe : xdescribe;
 const until = async (check, label) => {
   const deadline = Date.now() + 60000;

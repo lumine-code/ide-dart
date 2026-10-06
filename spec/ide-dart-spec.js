@@ -1,3 +1,4 @@
+const { resolutionContext, findOnPath } = require("./helpers/server-resolution");
 const fs = require("node:fs"),
   path = require("node:path");
 const { createProject, removeProject } = require("./helpers/project");
@@ -127,20 +128,42 @@ describe("ide-dart SDK discovery and installation", () => {
   });
   it("skips PATH directories and returns null when the SDK is unavailable", async () => {
     fs.mkdirSync(path.join(fixture.rootPath, process.platform === "win32" ? "dart.exe" : "dart"));
-    expect(server.findOnPath({ PATH: fixture.rootPath })).toBeNull();
-    spyOn(server, "findOnPath").and.returnValue(null);
+    expect(findOnPath("dart", { PATH: fixture.rootPath })).toBeNull();
     spyOn(server, "runtimeCandidates").and.returnValue([]);
-    expect(await server.resolveServer({ rootPath: fixture.rootPath })).toBeNull();
+    expect(
+      await server.resolveServer(
+        resolutionContext({ rootPath: fixture.rootPath, environment: { PATH: "" } }),
+        {},
+      ),
+    ).toBeNull();
   });
   it("prefers an explicit executable over a managed SDK", async () => {
     spyOn(server, "probeRuntime").and.callFake(async (command) => ({ command, version: "3.13.5" }));
-    const launch = await server.resolveServer({
-      serverPath: "selected",
-      managedServer: { binaryPath: "managed" },
-      rootPath: fixture.rootPath,
-    });
-    expect(launch.command).toBe("selected");
+    const launch = await server.resolveServer(
+      resolutionContext({ managedServer: { binaryPath: "managed" }, rootPath: fixture.rootPath }),
+      { serverPath: process.execPath },
+    );
+    expect(launch.command).toBe(process.execPath);
     expect(launch.args).toContain("language-server");
     expect(launch.cwd).toBe(fixture.rootPath);
+  });
+  it("continues after an unusable discovered SDK but preserves explicit selection errors", async () => {
+    const old = path.join(
+      fixture.rootPath,
+      process.platform === "win32" ? "old-dart.exe" : "old-dart",
+    );
+    fs.copyFileSync(process.execPath, old);
+    fs.chmodSync(old, 0o755);
+    spyOn(server, "runtimeCandidates").and.returnValue([old, process.execPath]);
+    spyOn(server, "probeRuntime").and.callFake(async (command) => {
+      if (command === old) throw new Error("Unsupported Dart SDK");
+      return { command, version: "3.13.5" };
+    });
+    const context = resolutionContext({ rootPath: fixture.rootPath, environment: { PATH: "" } });
+    expect((await server.resolveServer(context)).command).toBe(process.execPath);
+    expect(server.probeRuntime.calls.count()).toBe(2);
+    await expectAsync(server.resolveServer(context, { serverPath: old })).toBeRejectedWithError(
+      /Unsupported Dart SDK/,
+    );
   });
 });
