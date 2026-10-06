@@ -20,7 +20,7 @@ liveSuite("ide-dart real SDK language server", () => {
     lumine.config.set("ide-dart.serverPath", runtime);
     await prepareProject(fixture, runtime);
     const main = (await lumine.packages.activatePackage("ide-dart")).mainModule;
-    edge = main.consumeIdeClient({
+    edge = main.consumeIde({
       registerAdapter(adapter) {
         client = new LiveLspClient(adapter, fixture.rootPath);
         return { dispose() {} };
@@ -51,8 +51,8 @@ liveSuite("ide-dart real SDK language server", () => {
   if (process.env.REQUIRE_DART_MANAGED_INSTALL)
     it("installs a verified complete SDK through the hub and launches its analyzer", async () => {
       await client.stop();
-      await lumine.packages.activatePackage("ide-client");
-      const service = lumine.packages.getActivePackage("ide-client").mainModule.provideIdeClient();
+      await lumine.packages.activatePackage("ide");
+      const service = lumine.packages.getActivePackage("ide").mainModule.provideIde();
       try {
         await service.uninstallServer("ide-dart");
         const installed = await service.installServer("ide-dart", {
@@ -71,7 +71,7 @@ liveSuite("ide-dart real SDK language server", () => {
       } finally {
         await client.stop();
         await service.uninstallServer("ide-dart");
-        await lumine.packages.deactivatePackage("ide-client");
+        await lumine.packages.deactivatePackage("ide");
       }
     }, 600000);
 });

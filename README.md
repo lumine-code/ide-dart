@@ -2,7 +2,7 @@
 
 Provide Dart language intelligence through the SDK analysis server.
 
-Connects the [Dart SDK's built-in language server](https://github.com/dart-lang/sdk/blob/main/pkg/analysis_server/tool/lsp_spec/README.md) to ide-client for Dart source files, including Flutter projects with a compatible SDK and resolved dependencies.
+Connects the [Dart SDK's built-in language server](https://github.com/dart-lang/sdk/blob/main/pkg/analysis_server/tool/lsp_spec/README.md) to ide for Dart source files, including Flutter projects with a compatible SDK and resolved dependencies.
 
 ## Features
 
@@ -16,7 +16,7 @@ Connects the [Dart SDK's built-in language server](https://github.com/dart-lang/
 
 ## Installation
 
-Install ide-dart, ide-client and language-dart from the Install tab, then install the feature frontends you want, such as autocomplete, linter, hover, refactor and code-format. Select the project's `dart` executable in **Dart Path**, or use **Manage Servers** to download the full SDK. Managed builds support Windows, macOS and Linux on x64 and ARM64. The SDK is kept privately under the editor's language-servers directory; it is not added to your system PATH.
+Install ide-dart, ide and language-dart from the Install tab, then install the feature frontends you want, such as autocomplete, linter, hover, refactor and code-format. Select the project's `dart` executable in **Dart Path**, or use **Manage Servers** to download the full SDK. Managed builds support Windows, macOS and Linux on x64 and ARM64. The SDK is kept privately under the editor's language-servers directory; it is not added to your system PATH.
 
 An explicit Dart Path wins over the managed SDK. Without either, the adapter checks `DART_SDK`, `FLUTTER_ROOT`, the project's `.fvm/flutter_sdk` cache and PATH. On Windows, select `dart.exe` inside the SDK rather than the Flutter batch wrapper. For Flutter, select `flutter/bin/cache/dart-sdk/bin/dart` (or `dart.exe`); a managed standalone Dart SDK does not install Flutter.
 

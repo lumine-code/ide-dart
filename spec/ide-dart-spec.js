@@ -7,7 +7,7 @@ describe("ide-dart adapter registration and configuration", () => {
   beforeEach(async () => {
     main = (await lumine.packages.activatePackage("ide-dart")).mainModule;
     dispose = jasmine.createSpy("unregister");
-    edge = main.consumeIdeClient({
+    edge = main.consumeIde({
       registerAdapter(value) {
         adapter = value;
         return { dispose };
@@ -60,7 +60,7 @@ describe("ide-dart adapter registration and configuration", () => {
     const server = require("../lib/server"),
       report = jasmine.createSpy("missing");
     spyOn(server, "resolveServer").and.resolveTo(null);
-    const registration = main.consumeIdeClient({
+    const registration = main.consumeIde({
       registerAdapter(value) {
         adapter = value;
         return { dispose() {} };

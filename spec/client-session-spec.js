@@ -19,16 +19,16 @@ liveSuite("ide-dart actual editor integration", () => {
     paths = lumine.project.getPaths();
     await prepareProject(fixture, runtime);
     lumine.config.set("ide-dart.serverPath", runtime);
-    for (const name of ["language-dart", "ide-client", "ide-dart"])
+    for (const name of ["language-dart", "ide", "ide-dart"])
       await lumine.packages.activatePackage(name);
-    service = lumine.packages.getActivePackage("ide-client").mainModule.provideIdeClient();
+    service = lumine.packages.getActivePackage("ide").mainModule.provideIde();
     lumine.project.setPaths([fixture.rootPath]);
     editor = await lumine.workspace.open(fixture.filePath);
     editor.setGrammar(lumine.grammars.grammarForScopeName("source.dart"));
   }, 120000);
   afterEach(async () => {
     editor?.destroy();
-    for (const name of ["ide-dart", "ide-client", "language-dart"])
+    for (const name of ["ide-dart", "ide", "language-dart"])
       await lumine.packages.deactivatePackage(name);
     for (const key of ["serverPath", "features.format"]) lumine.config.unset(`ide-dart.${key}`);
     lumine.project.setPaths(paths);
@@ -54,7 +54,7 @@ liveSuite("ide-dart actual editor integration", () => {
   };
   it("auto-registers, honors dynamic capabilities and routes completion and formatting switches", async () => {
     const session = await sessionFor(),
-      main = lumine.packages.getActivePackage("ide-client").mainModule;
+      main = lumine.packages.getActivePackage("ide").mainModule;
     expect(service.adaptersForEditor(editor).filter(({ id }) => id === "ide-dart").length).toBe(1);
     expect(session.supports("textDocument/codeLens", editor)).toBe(false);
     await until(
