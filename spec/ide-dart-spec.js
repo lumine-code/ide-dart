@@ -137,15 +137,22 @@ describe("ide-dart SDK discovery and installation", () => {
       ),
     ).toBeNull();
   });
-  it("prefers an explicit executable over a managed SDK", async () => {
+  it("uses an explicit SDK without reading a corrupt managed installation", async () => {
     spyOn(server, "probeRuntime").and.callFake(async (command) => ({ command, version: "3.13.5" }));
+    const getManagedServer = jasmine
+      .createSpy("getManagedServer")
+      .and.throwError("Corrupt managed record");
     const launch = await server.resolveServer(
-      resolutionContext({ managedServer: { binaryPath: "managed" }, rootPath: fixture.rootPath }),
+      resolutionContext({ getManagedServer, rootPath: fixture.rootPath }),
       { serverPath: process.execPath },
     );
     expect(launch.command).toBe(process.execPath);
     expect(launch.args).toContain("language-server");
     expect(launch.cwd).toBe(fixture.rootPath);
+    expect(getManagedServer).not.toHaveBeenCalled();
+    await expectAsync(
+      server.resolveServer(resolutionContext({ getManagedServer })),
+    ).toBeRejectedWithError("Corrupt managed record");
   });
   it("continues after an unusable discovered SDK but preserves explicit selection errors", async () => {
     const old = path.join(
