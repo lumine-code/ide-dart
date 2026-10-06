@@ -79,7 +79,7 @@ liveSuite("ide-dart actual editor integration", () => {
     expect(
       await service.activeSessionForFeature(editor, "textDocument/formatting", "format"),
     ).toBeNull();
-    expect(await formatter.formatEntireFile(editor)).toEqual([]);
+    expect(await formatter.formatEntireFile(editor)).toBeNull();
   }, 90000);
   it("stops unloaded generations and reacquires the current module and server", async () => {
     const previous = await sessionFor(),
