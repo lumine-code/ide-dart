@@ -51,10 +51,9 @@ describe("ide-dart adapter registration and configuration", () => {
   it("returns section-scoped server settings and reads current values", () => {
     lumine.config.set("ide-dart.completeFunctionCalls", true);
     lumine.config.set("ide-dart.inlayHints", false);
-    expect(adapter.getWorkspaceConfiguration("dart").completeFunctionCalls).toBe(true);
-    expect(adapter.getWorkspaceConfiguration("dart").inlayHints).toBe(false);
-    expect(adapter.getWorkspaceConfiguration()).toEqual(adapter.getSettings());
-    expect(adapter.getWorkspaceConfiguration("unknown")).toBeUndefined();
+    expect(adapter.getSettings().dart.completeFunctionCalls).toBe(true);
+    expect(adapter.getSettings().dart.inlayHints).toBe(false);
+    expect(adapter.getWorkspaceConfiguration).toBeUndefined();
   });
   it("reports missing runtimes through the hub and describes the whole managed SDK", async () => {
     const server = require("../lib/server"),
