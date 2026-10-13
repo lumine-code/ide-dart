@@ -1,0 +1,16 @@
+{
+  "title": "ide-dart",
+  "description": "Dart analysis reports a string assigned to a double.",
+  "recordedOn": "2026-10-13",
+  "sourceRevision": "abdd5937488a54ccb716d7de355b4759f770b672",
+  "mode": "normal",
+  "fontSettings": "default",
+  "images": [
+    {
+      "file": "demo.png",
+      "label": "Dart analysis reports a string assigned to a double.",
+      "width": 1100,
+      "height": 490
+    }
+  ]
+}

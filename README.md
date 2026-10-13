@@ -14,6 +14,8 @@ Connects the [Dart SDK's built-in language server](https://github.com/dart-lang/
 - **Project support**: reads pubspec.yaml, analysis_options.yaml and resolved pub package configuration.
 - **Managed installation**: downloads and verifies the complete stable Dart SDK, including its analyzer, runtime, formatter, pub tools, libraries and licenses.
 
+![Dart analysis reports a string assigned to a double.](.github/demo.png)
+
 ## Installation
 
 Install ide-dart, ide and language-dart from the Install tab, then install the feature frontends you want, such as autocomplete, linter, hover, refactor and code-format. Select the project's `dart` executable in **Dart Path**, or use **Manage Servers** to download the full SDK. Managed builds support Windows, macOS and Linux on x64 and ARM64. The SDK is kept privately under the editor's language-servers directory; it is not added to your system PATH.
