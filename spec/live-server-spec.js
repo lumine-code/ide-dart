@@ -56,9 +56,9 @@ liveSuite("ide-dart real SDK language server", () => {
       try {
         await service.uninstallServer("ide-dart");
         const installed = await service.installServer("ide-dart", {
-          version: process.env.DART_VERSION || "3.13.5",
+          version: process.env.DART_VERSION || "3.13.6",
         });
-        expect(installed.version).toBe(process.env.DART_VERSION || "3.13.5");
+        expect(installed.version).toBe(process.env.DART_VERSION || "3.13.6");
         const managed = service.managedServer("ide-dart"),
           sdkRoot = path.dirname(path.dirname(managed.binaryPath));
         expect(fs.existsSync(path.join(sdkRoot, "lib", "core", "core.dart"))).toBe(true);

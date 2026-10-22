@@ -41,7 +41,7 @@ jobs:
     env:
       LUMINE_JASMINE_REPORTER: list
       LUMINE_TEST_PACKAGES: ide language-dart
-      DART_VERSION: 3.13.5
+      DART_VERSION: 3.13.6
       REQUIRE_DART_LSP: 1
       REQUIRE_DART_MANAGED_INSTALL: 1
     steps:
@@ -67,7 +67,7 @@ jobs:
           cache-dependency-path: lumine/package-lock.json
       - uses: dart-lang/setup-dart@v1.8.1
         with:
-          sdk: 3.13.5
+          sdk: 3.13.6
       - name: Export exact native Dart executable
         run: |
           echo "DART_PATH=$(command -v dart)" >> "$GITHUB_ENV"
